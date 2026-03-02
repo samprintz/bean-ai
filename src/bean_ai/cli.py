@@ -13,6 +13,7 @@ def main():
     preprocess_parser = subparsers.add_parser("preprocess", help="Preprocess beancount data")
     preprocess_parser.add_argument("input", help="Input beancount file")
     preprocess_parser.add_argument("--output", default="./data.csv", help="Output CSV file (default: ./data.csv)")
+    preprocess_parser.add_argument("--source-account-prefix", action="append", dest="source_account_prefixes", metavar="PREFIX", default=None, help="Source account prefix to skip (default: Assets). Can be specified multiple times.")
 
     # train subcommand
     train_parser = subparsers.add_parser("train", help="Train the prediction model")
@@ -27,7 +28,8 @@ def main():
     args = parser.parse_args()
 
     if args.command == "preprocess":
-        preprocess(args.input, args.output)
+        source_account_prefixes = tuple(args.source_account_prefixes) if args.source_account_prefixes else ("Assets",)
+        preprocess(args.input, args.output, source_account_prefixes)
     elif args.command == "train":
         train(args.input, args.dir)
     elif args.command == "predict":

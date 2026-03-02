@@ -2,7 +2,7 @@ import re
 from beancount.parser import parser
 
 
-def preprocess(input_path: str, output_path: str) -> None:
+def preprocess(input_path: str, output_path: str, source_account_prefixes: tuple[str, ...] = ("Assets",)) -> None:
     """
     Preprocess a beancount file and extract training data.
 
@@ -29,10 +29,9 @@ def preprocess(input_path: str, output_path: str) -> None:
         if any(char.isdigit() for char in narration):  # TODO make this configurable
             continue
 
-        # Use the posting that does not start with common source accounts
+        # Use the posting that does not start with source account prefixes
         posting = entry.postings[0]
-        source_prefixes = ("Konto:", "Aktiva:Barvermögen", "Assets:")  # TODO make this configurable
-        if any(entry.postings[0].account.startswith(p) for p in source_prefixes):
+        if any(entry.postings[0].account.startswith(p) for p in source_account_prefixes):
             posting = entry.postings[1]
 
         # Sanitize description (remove +word patterns)
