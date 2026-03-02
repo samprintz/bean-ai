@@ -7,6 +7,15 @@ name = "bean-ai"
 version = "0.1.0"
 description = "AI-powered account prediction for beancount"
 requires-python = ">=3.10"
+dependencies = [
+    "beancount",
+    "datasets",
+    "keras",
+    "keras_preprocessing",
+    "numpy",
+    "pandas",
+    "tensorflow",
+]
 
 [project.scripts]
 bean-ai = "bean_ai.cli:main"
