@@ -13,3 +13,4 @@ To this end, it can be installed e.g. with `pipx`.
 It can also be imported from another Python module:
 `from bean_ai import predict`.
 
+The `serve` subcommand starts an HTTP server for predictions.

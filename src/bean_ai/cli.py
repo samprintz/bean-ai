@@ -3,6 +3,7 @@ import argparse
 from .preprocess import preprocess
 from .train import train
 from .predict import predict
+from .serve import serve
 
 
 def main():
@@ -25,6 +26,12 @@ def main():
     predict_parser.add_argument("text", help="Transaction description text")
     predict_parser.add_argument("--dir", default="./models/", help="Model directory (default: ./models/)")
 
+    # serve subcommand
+    serve_parser = subparsers.add_parser("serve", help="Start HTTP prediction server")
+    serve_parser.add_argument("--host", default="127.0.0.1", help="Host to bind to (default: 127.0.0.1)")
+    serve_parser.add_argument("--port", type=int, default=8080, help="Port to listen on (default: 8080)")
+    serve_parser.add_argument("--dir", default="./models/", help="Model directory (default: ./models/)")
+
     args = parser.parse_args()
 
     if args.command == "preprocess":
@@ -35,3 +42,5 @@ def main():
     elif args.command == "predict":
         result = predict(args.text, args.dir)
         print(result)
+    elif args.command == "serve":
+        serve(args.host, args.port, args.dir)
