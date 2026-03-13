@@ -1,5 +1,8 @@
 # bean-ai
 
+`bean-ai` is a Python application
+to classify Beancount transactions with AI.
+
 ## Installation
 
 The current implementation requires Python 3.11.
@@ -18,12 +21,30 @@ pyenv activate bean-ai
 pip install -e .
 ```
 
-## HTTP Server
+## Usage
 
-Start the prediction server:
+### Preprocess data
 
 ```bash
-bean-ai serve --port 8080 --dir ./models/
+bean-ai preprocess ledger.beancount
+```
+
+### Train model
+
+```bash
+bean-ai train data.csv
+```
+
+### Predict account
+
+```bash
+bean-ai predict "Grocery Store"
+```
+
+### Serve model (HTTP Server)
+
+```bash
+bean-ai serve
 ```
 
 Make predictions:
@@ -31,6 +52,6 @@ Make predictions:
 ```bash
 curl -X POST http://localhost:8080/predict \
   -H "Content-Type: application/json" \
-  -d '{"texts": ["ACME Corp Payment", "Grocery Store"]}'
-# Response: {"accounts": ["Expenses:Services:Software", "Expenses:Food"]}
+  -d '{"texts": ["Pharmacy", "Grocery Store"]}'
+# Response: {"accounts": ["Expenses:Health", "Expenses:Food"]}
 ```
