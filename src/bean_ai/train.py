@@ -19,6 +19,12 @@ def train(input_path: str, model_dir: str) -> None:
     Reads a CSV with 'text' and 'label' columns, trains an LSTM classifier,
     and saves the model, tokenizer, and label mappings.
     """
+    if os.path.exists(model_dir):
+        answer = input(f"{model_dir} already exists. Overwrite? [y/N] ").strip().lower()
+        if answer != 'y':
+            print("Aborted.")
+            return
+
     # Read data
     df = pd.read_csv(input_path, sep="\t")
     df['label_name'] = df['label']
