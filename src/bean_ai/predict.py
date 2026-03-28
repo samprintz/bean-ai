@@ -1,7 +1,7 @@
 from .model import ModelPredictor
 
 
-DEFAULT_MODEL_DIR = "./models/"
+DEFAULT_MODEL_DIR = "./model/"
 
 
 def predict(text: str, model_dir: str = DEFAULT_MODEL_DIR) -> str:
