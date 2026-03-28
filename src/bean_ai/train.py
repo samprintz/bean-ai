@@ -3,6 +3,8 @@ import json
 import os
 import pickle
 
+from bean_ai.util import confirm_overwrite
+
 import numpy as np
 import pandas as pd
 from datasets import Dataset
@@ -19,11 +21,9 @@ def train(input_path: str, model_dir: str) -> None:
     Reads a CSV with 'text' and 'label' columns, trains an LSTM classifier,
     and saves the model, tokenizer, and label mappings.
     """
-    if os.path.exists(model_dir):
-        answer = input(f"{model_dir} already exists. Overwrite? [y/N] ").strip().lower()
-        if answer != 'y':
-            print("Aborted.")
-            return
+    if os.path.exists(model_dir) and not confirm_overwrite(model_dir):
+        print("Aborted.")
+        return
 
     # Read data
     df = pd.read_csv(input_path, sep="\t")

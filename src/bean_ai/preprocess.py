@@ -3,6 +3,8 @@ import re
 import sys
 from beancount.parser import parser
 
+from bean_ai.util import confirm_overwrite
+
 
 def preprocess(input_path: str, output_path: str, source_account_prefixes: tuple[str, ...] = ("Assets",)) -> None:
     """
@@ -12,11 +14,9 @@ def preprocess(input_path: str, output_path: str, source_account_prefixes: tuple
     for transactions with exactly 2 postings where the description
     contains no digits.
     """
-    if os.path.exists(output_path):
-        answer = input(f"{output_path} already exists. Overwrite? [y/N] ").strip().lower()
-        if answer != "y":
-            print("Aborted.")
-            sys.exit(0)
+    if os.path.exists(output_path) and not confirm_overwrite(output_path):
+        print("Aborted.")
+        sys.exit(0)
 
     entries, errors, options = parser.parse_file(input_path)
 
