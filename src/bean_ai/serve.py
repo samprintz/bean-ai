@@ -39,7 +39,11 @@ def serve(host: str, port: int, model_dir: str):
     """
     global predictor
     print(f"Loading model from {model_dir}...")
-    predictor = ModelPredictor(model_dir)
+    try:
+        predictor = ModelPredictor(model_dir)
+    except FileNotFoundError as e:
+        print(f"Error: Model directory '{model_dir}' does not contain a valid model.")
+        raise SystemExit(1)
 
     print(f"Server running on http://{host}:{port}")
     print("Endpoints:")
